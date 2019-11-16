@@ -6,6 +6,7 @@ import {
     Button,
     TouchableOpacity,
     FlatList,
+    Dimensions
 } from 'react-native';
 import OrderItem from '../components/OrderItem';
 import MenuButton from './MenuButton';
@@ -26,7 +27,6 @@ class OrderSummary extends PureComponent {
 
     render() {
         const { data } = this.props;
-        console.log('orderSUmmary', data);
         return (
             <View style={{ ...this.props.style, ...styles.screen }}>
                 <View style={styles.orderTitle}>
@@ -42,9 +42,17 @@ class OrderSummary extends PureComponent {
                 <View style={styles.buttonContainer}></View>
                 <View style={styles.orderPrice}></View>
                 <View style={styles.buttonContainer}>
-                    <MenuButton data={{ name: 'Pay Now' }} />
-                    <MenuButton data={{ name: 'Send KOT' }} />
+                    <MenuButton
+                        data={'Pay Now'}
+                        onPress={() => console.log('create order in gql')}
+                    />
+                    <MenuButton data={'Send KOT'} />
                 </View>
+                {/* {Dimensions.get('window').width <= 1080 &&
+                    <Button
+                        style={styles.button}
+                        title="Display Menu"
+                        onPress={this.props.onPress} />} */}
             </View>
         );
     }

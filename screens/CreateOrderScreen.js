@@ -12,20 +12,20 @@ import {
   StyleSheet,
   View,
   Text,
+  Dimensions,
+  Button
 } from 'react-native';
 import OrderSummary from '../components/OrderSummary';
 import Menu from '../components/Menu';
-import OrderItem from '../components/OrderItem';
-import GridView from '../components/GridView';
 
 const CreateOrderScreen = (props) => {
 
   const [orderItems, setOrderItems] = useState([]);
+  const [showOrder, setShowOrder] = useState(false);
 
 
   const addToOrder = (item) => {
     const { categoryName, name, productPricings } = item;
-    console.log(categoryName !== "Modifiers");
     let orderProduct = {
       qty: 1,
       title: name,
@@ -57,14 +57,28 @@ const CreateOrderScreen = (props) => {
     }
   };
 
+
   return (
     <View style={styles.screen}>
       <View style={styles.rest}>
-        <OrderSummary style={styles.orderScreen} data={orderItems} />
-        <View style={styles.orderOptions}>
+        <View style={
+          Dimensions.get('window').width <= 1080 ? (showOrder ? styles.orderScreenPhone : '') : styles.orderScreen}>
+          <OrderSummary
+            style={
+              Dimensions.get('window').width <= 1080 ? (showOrder ? styles.orderScreenPhone : '') : styles.orderScreen}
+            data={orderItems}
+            onPress={setShowOrder} />
+        </View>
+        <View style={Dimensions.get('window').width <= 1080 ?
+          (showOrder ? { display: 'none' } : styles.wrapper) : styles.orderOptions}>
+          {Dimensions.get('window').width <= 1080 &&
+            <Button
+              title="Show Order"
+              onPress={() => { setShowOrder(!showOrder) }} />}
           <Menu onAddItem={addToOrder} />
         </View>
       </View>
+
     </View>
   );
 };
@@ -75,11 +89,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#EAEBEB',
   },
-  header: {
-    flex: 2,
-  },
   rest: {
-    flex: 8,
+    flex: 1,
     flexDirection: 'row',
   },
   orderScreen: {
@@ -93,6 +104,28 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 20,
   },
+  orderScreenPhone: {
+    ...StyleSheet.absoluteFill,
+    margin: 10,
+    borderRadius: 20,
+    flexDirection: 'column',
+  },
+  orderOptionsPhone: {
+    flex: 1,
+    margin: 10,
+    borderRadius: 20,
+  },
+  viewPager: {
+    flex: 1,
+  },
+  wrapper: {
+    ...StyleSheet.absoluteFill,
+    backgroundColor: '#EAEBEB',
+  },
+  button: {
+    position: 'absolute',
+    bottom: 0,
+  }
 });
 
 CreateOrderScreen.navigationOptions = {

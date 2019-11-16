@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, Dimensions } from 'react-native';
 import { getOrders } from '../services/apiservice';
 import ListOrder from '../components/ListOrder';
+import ListOrderHeader from '../components/ListOrderHeader';
 import MenuButton from '../components/MenuButton';
 
 class OrdersList extends Component {
@@ -52,7 +53,7 @@ class OrdersList extends Component {
         return (
             <View style={styles.screen}>
                 <View style={styles.headerContainer}>
-                    <ListOrder data={{
+                    <ListOrderHeader data={{
                         table: 'Table',
                         startTime: 'Since',
                         guestCount: 'Pax',
@@ -67,11 +68,11 @@ class OrdersList extends Component {
                 {hasDataLoaded ? (
                     <View style={styles.orderListContainer}>
                         {displayedData.map((data) => (
-                            <ListOrder data={data} style={{ height: 60 }} />
+                            <ListOrder data={data} style={{ height: Dimensions.get('window').width <= 1080 ? 50 : 60, }} />
                         ))}
                         <View style={styles.ButtonContainer}>
-                            <MenuButton data={{ name: 'Back' }} style={styles.btnStyle} onPress={() => { this.onPressBack() }} />
-                            <MenuButton data={{ name: 'Next' }} style={styles.btnStyle} onPress={() => { this.onPressNext() }} />
+                            <MenuButton data={'Back'} style={styles.btnStyle} onPress={() => { this.onPressBack() }} />
+                            <MenuButton data={'Next'} style={styles.btnStyle} onPress={() => { this.onPressNext() }} />
                         </View>
                     </View>
                 ) : (
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#EAEBEB',
     },
     headerContainer: {
-        flex: 1,
+        flex: Dimensions.get('window').width <= 1080 ? 0.8 : 1,
         alignSelf: 'stretch',
         justifyContent: 'flex-end',
         paddingVertical: 10,
@@ -123,16 +124,16 @@ const styles = StyleSheet.create({
     button: {
         backgroundColor: '#2b2423',
         borderRadius: 70,
-        height: 60,
+        height: Dimensions.get('window').width <= 1080 ? 40 : 60,
         marginVertical: 3,
         marginHorizontal: 5,
         justifyContent: 'center',
         alignItems: 'center',
-        width: 60,
+        width: Dimensions.get('window').width <= 1080 ? 40 : 60,
         elevation: 5,
     },
     btnText: {
-        fontSize: 50,
+        fontSize: Dimensions.get('window').width <= 1080 ? 30 : 50,
         fontWeight: 'bold',
         color: 'white',
         paddingBottom: 4,
@@ -149,6 +150,8 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center',
         fontSize: 15,
         fontWeight: 'bold',
+        height: 60,
+        borderRadius: 30,
     }
 });
 
